@@ -162,6 +162,7 @@ pub mod room_key_request;
 pub mod sticker;
 pub mod stripped;
 pub mod tag;
+pub mod to_device;
 pub mod typing;
 
 /// An event that is malformed or otherwise invalid.
