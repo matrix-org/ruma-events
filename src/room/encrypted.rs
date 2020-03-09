@@ -1,10 +1,10 @@
 //! Types for the *m.room.encrypted* event.
+use std::collections::HashMap;
 
 use js_int::UInt;
 use ruma_identifiers::{DeviceId, EventId, RoomId, UserId};
 use serde::{ser::SerializeStruct, Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::{from_value, Value};
-use std::collections::HashMap;
 
 use crate::{Algorithm, Event, EventType, FromRaw};
 
