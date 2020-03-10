@@ -27,7 +27,6 @@ use crate::{
 #[allow(clippy::large_enum_variant)]
 pub enum ToDevice {
     // TODO this should include a *m.dummy" event.
-
     /// To-device version of the *m.room_key* event.
     RoomKey(ToDeviceRoomKey),
     /// To-device version of the *m.room.encrypted* event.
