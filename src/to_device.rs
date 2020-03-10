@@ -250,9 +250,8 @@ mod tests {
     use super::ToDevice;
     use crate::{
         key::verification::{
-            start::StartEventContent, HashAlgorithm, KeyAgreementProtocol,
+            cancel::CancelCode, start::StartEventContent, HashAlgorithm, KeyAgreementProtocol,
             MessageAuthenticationCode, ShortAuthenticationString, VerificationMethod,
-            cancel::CancelCode,
         },
         room::encrypted::EncryptedEventContent,
         room_key_request::Action,
