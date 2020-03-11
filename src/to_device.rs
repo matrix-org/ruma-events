@@ -279,14 +279,14 @@ mod tests {
     #[test]
     fn room_key() {
         let room_key = r#"{
-        "content": {
-            "algorithm": "m.megolm.v1.aes-sha2",
-            "room_id": "!test:localhost",
-            "session_id": "fake_id",
-            "session_key": "fake_key"
-        },
-        "sender": "@alice:example.org",
-        "type": "m.room_key"
+            "content": {
+                "algorithm": "m.megolm.v1.aes-sha2",
+                "room_id": "!test:localhost",
+                "session_id": "fake_id",
+                "session_key": "fake_key"
+            },
+            "sender": "@alice:example.org",
+            "type": "m.room_key"
         }"#;
 
         let event = deserialize! {room_key, ToDevice::RoomKey};
