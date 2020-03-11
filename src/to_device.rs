@@ -262,16 +262,27 @@ mod tests {
     macro_rules! deserialize {
         ($source:ident, $($target:tt)*) => {{
             let event = serde_json::from_str::<EventResult<ToDevice>>($source)
-                .expect(&format!("Can't deserialize to-device event: {} from source {}", stringify!($($target)*), $source));
+                .expect(&format!(
+                    "Can't deserialize to-device event: {} from source {}",
+                    stringify!($($target)*), $source
+                ));
 
-            let event = event.into_result().expect("To-device event {} deserialized into a invalid event");
+            let event = event
+                .into_result()
+                .expect("To-device event {} deserialized into a invalid event");
 
             match event {
                 $($target)*(e) => {
-                    assert_eq!(e.sender, UserId::try_from("@alice:example.org").unwrap());
+                    assert_eq!(
+                        e.sender,
+                        UserId::try_from("@alice:example.org").unwrap()
+                    );
                     e
                 },
-                _ => panic!("{} event deserialized into a incorrect event type", stringify!($($target)*)),
+                _ => panic!(
+                    "{} event deserialized into a incorrect event type",
+                    stringify!($($target)*)
+                ),
             }
         }};
     }
@@ -500,7 +511,10 @@ mod tests {
 
         let event = deserialize! {source, ToDevice::KeyVerificationAccept};
         assert_eq!(event.content.hash, HashAlgorithm::Sha256);
-        assert_eq!(event.content.commitment, "fQpGIW1Snz+pwLZu6sTy2aHy/DYWWTspTJRPyNp0PKkymfIsNffysMl6ObMMFdIJhk6g6pwlIqZ54rxo8SLmAg");
+        assert_eq!(
+            event.content.commitment,
+            "fQpGIW1Snz+pwLZu6sTy2aHy/DYWWTspTJRPyNp0PKkymfIsNffysMl6ObMMFdIJhk6g6pwlIqZ54rxo8SLmAg"
+        );
         assert_eq!(
             event.content.key_agreement_protocol,
             KeyAgreementProtocol::Curve25519
@@ -534,7 +548,10 @@ mod tests {
         let event = deserialize! {source, ToDevice::KeyVerificationKey};
 
         assert_eq!(event.content.transaction_id, "S0meUniqueAndOpaqueString");
-        assert_eq!(event.content.key, "fQpGIW1Snz+pwLZu6sTy2aHy/DYWWTspTJRPyNp0PKkymfIsNffysMl6ObMMFdIJhk6g6pwlIqZ54rxo8SLmAg");
+        assert_eq!(
+            event.content.key,
+            "fQpGIW1Snz+pwLZu6sTy2aHy/DYWWTspTJRPyNp0PKkymfIsNffysMl6ObMMFdIJhk6g6pwlIqZ54rxo8SLmAg"
+        );
     }
 
     #[test]
@@ -553,8 +570,14 @@ mod tests {
 
         let event = deserialize! {source, ToDevice::KeyVerificationMac};
         assert_eq!(event.content.transaction_id, "S0meUniqueAndOpaqueString");
-        assert_eq!(event.content.keys, "2Wptgo4CwmLo/Y8B8qinxApKaCkBG2fjTWB7AbP5Uy+aIbygsSdLOFzvdDjww8zUVKCmI02eP9xtyJxc/cLiBA");
-        assert_eq!(event.content.mac["ed25519:ABCDEF"], "fQpGIW1Snz+pwLZu6sTy2aHy/DYWWTspTJRPyNp0PKkymfIsNffysMl6ObMMFdIJhk6g6pwlIqZ54rxo8SLmAg");
+        assert_eq!(
+            event.content.keys,
+            "2Wptgo4CwmLo/Y8B8qinxApKaCkBG2fjTWB7AbP5Uy+aIbygsSdLOFzvdDjww8zUVKCmI02eP9xtyJxc/cLiBA"
+        );
+        assert_eq!(
+            event.content.mac["ed25519:ABCDEF"],
+            "fQpGIW1Snz+pwLZu6sTy2aHy/DYWWTspTJRPyNp0PKkymfIsNffysMl6ObMMFdIJhk6g6pwlIqZ54rxo8SLmAg"
+        );
     }
 
     #[test]
