@@ -31,6 +31,19 @@ pub fn serde_json_error_to_generic_de_error<E: serde::de::Error>(error: serde_js
     E::custom(error.to_string())
 }
 
+pub fn get_field_or_default<T>(value: &Value, field: &'static str) -> T
+where
+    T: DeserializeOwned + Default,
+{
+    serde_json::from_value(
+        value
+            .get(field)
+            .cloned()
+            .unwrap_or_default()
+    )
+    .unwrap_or_default()
+}
+
 pub fn get_field<T, E>(value: &Value, field: &'static str) -> Result<T, E>
 where
     T: DeserializeOwned,

@@ -4,6 +4,8 @@
 //! fields. To-device events are sent directly from one device to the other
 //! without the need to create a room.
 
+use std::collections::HashMap;
+
 use ruma_identifiers::UserId;
 use serde::{de::DeserializeOwned, Deserialize, Deserializer, Serialize};
 use serde_json::Value;
@@ -18,7 +20,7 @@ use crate::{
     room::encrypted::EncryptedEventContent,
     room_key::RoomKeyEventContent,
     room_key_request::RoomKeyRequestEventContent,
-    util::get_field,
+    util::{get_field, get_field_or_default},
     TryFromRaw,
 };
 
@@ -58,6 +60,13 @@ pub struct ToDeviceEvent<C> {
     pub sender: UserId,
     /// Data specific to the event type.
     pub content: C,
+    /// The recipient of the to-device message, in case the message was
+    /// encrypted.
+    pub recipient: Option<UserId>,
+    /// Public identity keys of the sender that encrypted the message.
+    pub keys: HashMap<String, String>,
+    /// Public identity keys of the recipient.
+    pub recipient_keys: HashMap<String, String>,
 }
 
 /// To-device version of the *m.dummy* event.
@@ -128,6 +137,9 @@ where
         Ok(Self {
             content: C::try_from_raw(raw.content)?,
             sender: raw.sender,
+            recipient: raw.recipient,
+            keys: raw.keys,
+            recipient_keys: raw.recipient_keys,
         })
     }
 }
@@ -147,6 +159,9 @@ where
         Ok(Self {
             content: get_field(&value, "content")?,
             sender: get_field(&value, "sender")?,
+            recipient: get_field_or_default(&value, "recipient"),
+            keys: get_field_or_default(&value, "keys"),
+            recipient_keys: get_field_or_default(&value, "keys"),
         })
     }
 }
