@@ -7,7 +7,7 @@ use ruma_identifiers::{EventId, RoomId, UserId};
 use serde::{ser::SerializeStruct, Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::{from_value, Value};
 
-use super::{EncryptedFile, ImageInfo, ThumbnailInfo, encrypted::EncryptedEventContent};
+use super::{encrypted::EncryptedEventContent, EncryptedFile, ImageInfo, ThumbnailInfo};
 use crate::{EventType, FromRaw};
 
 pub mod feedback;
